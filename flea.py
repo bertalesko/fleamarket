@@ -12,6 +12,10 @@ import schedule
 #zmienic nazwe na fence
 nazwa = "Fence"
 przycisk = "OK"
+boxNazwaTradera = (706,145,872,207)
+boxPrzyciskOK = (930,550,950,585)
+
+
 
 
 def click(x,y):
@@ -21,27 +25,24 @@ def click(x,y):
 
 
 
-def rob():
-    box = (706,145,872,207)
+def rob(boxdimention):
+    
 
-    screenshot1 = imagegrab.grab(box)
+    screenshot = imagegrab.grab(boxdimention)
     
-    return screenshot1
-    
-def robOK():
-    
-    box = (930,550,950,585)
+    return screenshot
 
-    screenshot1 = imagegrab.grab(box)
+
     
-    return screenshot1
+
 
 
 
 
 def tesse():
   
-    img = rob()
+    img = rob(boxNazwaTradera)
+    
     pix = img.load()
     for y in range(img.size[1]):
         for x in range(img.size[0]):
@@ -49,7 +50,9 @@ def tesse():
                 pix[x, y] = (0, 0, 0, 255)
             else:
                 pix[x, y] = (255, 255, 255, 255)
+                   
     img.save('temp.jpg')
+   
     text = pytesseract.image_to_string(Image.open('temp.jpg'))
     # os.remove('temp.jpg')e
     print(text)
@@ -57,21 +60,7 @@ def tesse():
 
 
 
-def tesseOK():
-  
-    img = robOK()
-    pix = img.load()
-    for y in range(img.size[1]):
-        for x in range(img.size[0]):
-            if pix[x, y][0] < 102 or pix[x, y][1] < 102 or pix[x, y][2] < 102:
-                pix[x, y] = (0, 0, 0, 255)
-            else:
-                pix[x, y] = (255, 255, 255, 255)
-    img.save('temp.jpg')
-    text = pytesseract.image_to_string(Image.open('temp.jpg'))
-    # os.remove('temp.jpg')e
-    print(text)
-    return text
+
 
 def odswiez():
     click(1838,117)
@@ -97,21 +86,21 @@ def sprawdz():
     text = tesse()
     if nazwa in text:
         kup()
+        potwierdz()
     else:
         now = datetime.datetime.now()
         print("nie ma, czekam minute : "+ now.strftime("%Y-%m-%d %H:%M:%S"))
+        potwierdz()
         
 
-def sprawdzOK():
-    text = tesseOK()
-    if przycisk in text:
-        click(960,560)
+def potwierdz():
+    click(960,560)
 
 
 
 
-schedule.every(1).minutes.do(sprawdz)
-schedule.every(2).minutes.do(sprawdzOK)
+schedule.every(1).minute.do(sprawdz)
+
 
 
 
