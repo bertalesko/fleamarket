@@ -11,6 +11,8 @@ import schedule
 
 #zmienic nazwe na fence
 nazwa = "Fence"
+przycisk = "OK"
+
 
 def click(x,y):
     win32api.SetCursorPos((x,y))
@@ -26,7 +28,14 @@ def rob():
     
     return screenshot1
     
+def robOK():
     
+    box = (930,550,950,585)
+
+    screenshot1 = imagegrab.grab(box)
+    
+    return screenshot1
+
 
 
 
@@ -46,6 +55,23 @@ def tesse():
     print(text)
     return text
 
+
+
+def tesseOK():
+  
+    img = robOK()
+    pix = img.load()
+    for y in range(img.size[1]):
+        for x in range(img.size[0]):
+            if pix[x, y][0] < 102 or pix[x, y][1] < 102 or pix[x, y][2] < 102:
+                pix[x, y] = (0, 0, 0, 255)
+            else:
+                pix[x, y] = (255, 255, 255, 255)
+    img.save('temp.jpg')
+    text = pytesseract.image_to_string(Image.open('temp.jpg'))
+    # os.remove('temp.jpg')e
+    print(text)
+    return text
 
 def odswiez():
     click(1838,117)
@@ -76,10 +102,16 @@ def sprawdz():
         print("nie ma, czekam minute : "+ now.strftime("%Y-%m-%d %H:%M:%S"))
         
 
+def sprawdzOK():
+    text = tesseOK()
+    if przycisk in text:
+        click(960,560)
+
 
 
 
 schedule.every(1).minutes.do(sprawdz)
+schedule.every(2).minutes.do(sprawdzOK)
 
 
 
