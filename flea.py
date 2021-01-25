@@ -10,10 +10,10 @@ import schedule
 
 
 #zmienic nazwe na fence
-nazwa = "Fence"
-przycisk = "OK"
-boxNazwaTradera = (706,145,872,207)
-boxPrzyciskOK = (930,550,950,585)
+traderName = "Fence"
+buttonText = "OK"
+traderNameBox = (706,145,872,207)
+OKbuttonBox = (930,550,950,585)
 
 
 
@@ -25,7 +25,7 @@ def click(x,y):
 
 
 
-def rob(boxdimention):
+def takeScreenshot(boxdimention):
     
 
     screenshot = imagegrab.grab(boxdimention)
@@ -41,7 +41,7 @@ def rob(boxdimention):
 
 def tesse():
   
-    img = rob(boxNazwaTradera)
+    img = takeScreenshot(traderNameBox)
     
     pix = img.load()
     for y in range(img.size[1]):
@@ -62,7 +62,7 @@ def tesse():
 
 
 
-def odswiez():
+def refresh():
     click(1838,117)
     time.sleep(.5)
 
@@ -71,35 +71,35 @@ def odswiez():
 
 
 
-def kup():
-    print('jest')
+def purchase():
+    print('item available')
     click(1760,170)
     time.sleep(.5)
     click(850,600)
     time.sleep(.5)
     now = datetime.datetime.now()
-    print("kupilem : "+ now.strftime("%Y-%m-%d %H:%M:%S"))
+    print("attempted purchase : "+ now.strftime("%Y-%m-%d %H:%M:%S"))
 
 
-def sprawdz():
-    odswiez()
+def checkIfAvailable():
+    refresh()
     text = tesse()
-    if nazwa in text:
-        kup()
-        potwierdz()
+    if traderName in text:
+        purchase()
+        confirm()
     else:
         now = datetime.datetime.now()
-        print("nie ma, czekam minute : "+ now.strftime("%Y-%m-%d %H:%M:%S"))
-        potwierdz()
+        print("not available, waiting another minute : "+ now.strftime("%Y-%m-%d %H:%M:%S"))
+        confirm()
         
 
-def potwierdz():
+def confirm():
     click(960,560)
 
 
 
 
-schedule.every(1).minute.do(sprawdz)
+schedule.every(5).seconds.do(checkIfAvailable)
 
 
 
