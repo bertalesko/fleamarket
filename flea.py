@@ -99,7 +99,7 @@ def confirm():
 
 
 
-schedule.every(5).seconds.do(checkIfAvailable)
+schedule.every(1).minute.do(checkIfAvailable)
 
 
 
