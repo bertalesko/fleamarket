@@ -9,7 +9,7 @@ import datetime
 import schedule
 
 
-#zmienic nazwe na fence
+
 traderName = "Fence"
 buttonText = "OK"
 traderNameBox = (706,145,872,207)
